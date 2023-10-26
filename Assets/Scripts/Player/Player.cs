@@ -11,12 +11,11 @@ public class Player : MonoBehaviour, IControllable
     [SerializeField] private float _gravityMod;
     [SerializeField] private float _dragInAir;
     [SerializeField] private float _maxVelocity;
-    public float MoveForce;
-    public float JumpForce;
-    public Animator _animator;
-    
-    public float XSensitivity;
+    [SerializeField] private float _moveForce;
+    [SerializeField] private  float _jumpForce;
+    [SerializeField] private float _xSensitivity;
 
+    private Animator _animator;
     private Rigidbody _rb;
     private GroundChecker _groundChecker;
 
@@ -76,7 +75,7 @@ public class Player : MonoBehaviour, IControllable
     {
         if (_groundChecker.IsGrounded)
         {
-            _rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse); 
+            _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse); 
             
             _animator.SetTrigger("JumpUp");
            
@@ -106,7 +105,7 @@ public class Player : MonoBehaviour, IControllable
 
         if (_isGrounded && direction != Vector3.zero)
         {
-            _rb.AddRelativeForce(direction * MoveForce);
+            _rb.AddRelativeForce(direction * _moveForce);
 
             if (_rb.velocity.magnitude >= _maxVelocity)
             {
@@ -129,7 +128,7 @@ public class Player : MonoBehaviour, IControllable
             if (inputX != 0)
             {
                 var targetRot = Quaternion.Lerp(transform.rotation,
-            Quaternion.LookRotation(direction, Vector3.up), Time.fixedDeltaTime * XSensitivity);          
+            Quaternion.LookRotation(direction, Vector3.up), Time.fixedDeltaTime * _xSensitivity);          
 
                 _rb.MoveRotation(targetRot);
             }
